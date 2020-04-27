@@ -43,7 +43,7 @@ public class Runner {
         String[] dotdelimeter = filepath.split("\\.");
         String filename = fsdelimeter[fsdelimeter.length-1];
         String filetype = dotdelimeter[dotdelimeter.length-1];
-        JSONArray arr = new JSONArray();
+        JSONArray data = new JSONArray();
 
         try  {       
              
@@ -85,7 +85,7 @@ public class Runner {
                 JSONParser jsonParser = new JSONParser();
 
                 Object obj = jsonParser.parse(br);
-                arr = (JSONArray) obj;
+                data = (JSONArray) obj;
             
             }
 
@@ -103,16 +103,16 @@ public class Runner {
                     }
                     // use comma as separator
                     else {
-                        String[] data = line.split(",");
-                        for(int i = 0; i < data.length; i++) {
-                            map.put(header[i], data[i].toString());
+                        String[] arr = line.split(",");
+                        for(int i = 0; i < arr.length; i++) {
+                            map.put(header[i], arr[i].toString());
                         }
                     }
                     JSONObject obj = new JSONObject(map);
-                    arr.add(obj);
+                    data.add(obj);
                     count = count + 1;
                 }
-                arr.remove(0);
+                data.remove(0);
                 br.close();
             }
         }
@@ -130,19 +130,19 @@ public class Runner {
             e.printStackTrace();
         }
 
-    return arr;
+    return data;
     }
 
     //Question 1: Average number of siblings (round up)
-    public static String AverageSiblings(JSONArray arr) {
+    public static String AverageSiblings(JSONArray data) {
 
         //Create array list for data ingestion from json array
         ArrayList<Integer> siblingsarr = new ArrayList<>(); 
 
         //Loop array
-        for (int i = 0; i < arr.size(); i++) {
+        for (int i = 0; i < data.size(); i++) {
 
-            JSONObject population = (JSONObject) arr.get(i);
+            JSONObject population = (JSONObject) data.get(i);
             int siblingsvalue = (int) Integer.parseInt( (String) population.get("siblings"));
             siblingsarr.add(siblingsvalue);
 
@@ -157,13 +157,13 @@ public class Runner {
     }
 
     //Question 2: Top 3 favourite foods and the number of people who like them
-    public static String TopFavouriteFood(JSONArray arr) {
+    public static String TopFavouriteFood(JSONArray data) {
 
         ArrayList<String> favouritefoodarr = new ArrayList<>();
 
-        for (int i = 0; i < arr.size(); i++) {
+        for (int i = 0; i < data.size(); i++) {
 
-            JSONObject population = (JSONObject) arr.get(i);
+            JSONObject population = (JSONObject) data.get(i);
             String favouritefoodvalue = (String) population.get("favourite_food");
             favouritefoodarr.add(favouritefoodvalue);
 
@@ -198,7 +198,7 @@ public class Runner {
     }
 
     //Question 3: How many people were born in each month of the year (uses the month of each person's respective timezone of birth)
-    public static String BirthMonthCount(JSONArray arr) {
+    public static String BirthMonthCount(JSONArray data) {
 
         ArrayList<Integer> birthdayarr = new ArrayList<>(); 
 
@@ -206,10 +206,10 @@ public class Runner {
         SimpleDateFormat monthformatstr = new SimpleDateFormat("MMMM");
         SimpleDateFormat monthformatint = new SimpleDateFormat("MM");
         
-        for (int i = 0; i < arr.size(); i++) {
+        for (int i = 0; i < data.size(); i++) {
 
             //Get birthday and timezone from data
-            JSONObject population = (JSONObject) arr.get(i);
+            JSONObject population = (JSONObject) data.get(i);
             Long birthdayvalue_long = (Long) Long.parseLong((String) population.get("birth_timestamp"));
             TimeZone timezone = TimeZone.getTimeZone((String) population.get("birth_timezone"));
 
@@ -255,16 +255,16 @@ public class Runner {
             System.exit(1);
         }
 
+
+        String filepath = args[0];  
         
-        String filepath = args[0];   
-        
-        //Call ReadFile function to output full dataset
-        JSONArray arr = ReadFile(filepath);
+        //Call ReadFile to output full dataset
+        JSONArray data = ReadFile(filepath);
 
         //Print outputs
-        System.out.println(AverageSiblings(arr));
-        System.out.println(TopFavouriteFood(arr));
-        System.out.println(BirthMonthCount(arr));
+        System.out.println(AverageSiblings(data));
+        System.out.println(TopFavouriteFood(data));
+        System.out.println(BirthMonthCount(data));
 
     }
     
