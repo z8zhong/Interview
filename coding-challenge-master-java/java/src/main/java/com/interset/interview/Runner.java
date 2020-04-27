@@ -231,10 +231,20 @@ public class Runner {
                 map.put(birthdayarr.get(i), 1);
 
         } 
+
+        System.out.println(map);
+
+        //Fill in months which has no one's birthday on
+        for (int i = 1; i <= 12; i++) {
+
+            if (!map.containsKey(i))
+                map.put(i, 0);
+        }
+    
         
         String output = "Birth Months: ";
 
-        for (int i = 1; i < map.size(); i++) {
+        for (int i = 1; i < map.size() + 1; i++) {
 
             String month_str = new DateFormatSymbols().getMonths()[i-1];
             output = output + month_str + "(" + map.get(i) + "), ";
