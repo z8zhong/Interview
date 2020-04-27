@@ -255,13 +255,16 @@ public class Runner {
             System.exit(1);
         }
 
-
+        
         String filepath = args[0];   
+        
+        //Call ReadFile function to output full dataset
+        JSONArray arr = ReadFile(filepath);
 
         //Print outputs
-        System.out.println(AverageSiblings(ReadFile(filepath)));
-        System.out.println(TopFavouriteFood(ReadFile(filepath)));
-        System.out.println(BirthMonthCount(ReadFile(filepath)));
+        System.out.println(AverageSiblings(arr));
+        System.out.println(TopFavouriteFood(arr));
+        System.out.println(BirthMonthCount(arr));
 
     }
     
